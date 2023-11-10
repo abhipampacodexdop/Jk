@@ -448,7 +448,7 @@ async def maintenance_on():
 
 
 async def is_served_user(user_id: int) -> bool:
-    user = await usersdb.find_one({"user_id": user_id})
+    user = await usersdb.find_one({"_id": user_id})
     if not user:
         return False
     return True
@@ -456,7 +456,7 @@ async def is_served_user(user_id: int) -> bool:
 
 async def get_served_users() -> list:
     users_list = []
-    async for user in usersdb.find({"user_id": {"$gt": 0}}):
+    async for user in usersdb.find({"_id": {"$gt": 0}}):
         users_list.append(user)
     return users_list
 
@@ -465,7 +465,7 @@ async def add_served_user(user_id: int):
     is_served = await is_served_user(user_id)
     if is_served:
         return
-    return await usersdb.insert_one({"user_id": user_id})
+    return await usersdb.insert_one({"_id": user_id})
 
 
 async def get_served_chats() -> list:
